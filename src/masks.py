@@ -2,6 +2,7 @@ from typing import Union
 
 
 def get_mask_card_number(card_number: Union[str, int]) -> str:
+    """Функция маскировки номера банковской карты."""
     card_number = str(card_number)
     mask_card_number = card_number[:6] + "*" * 6 + card_number[12:]
     mask_card_number = (
@@ -11,6 +12,7 @@ def get_mask_card_number(card_number: Union[str, int]) -> str:
 
 
 def get_mask_account(account: Union[str, int]) -> str:
+    """Функция маскировки номера банковского счета."""
     account = str(account)
     mask_account = "*" * 2 + account[16:]
     return mask_account
