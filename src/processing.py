@@ -7,9 +7,9 @@ def filter_by_state(account_info: list[dict], state="EXECUTED") -> list[dict]:
     return filtered_info
 
 
-def sort_by_date(account_info: list[dict], sorted="down") -> list[dict]:
+def sort_by_date(account_info: list[dict], sorting_order="down") -> list[dict]:
     """Функция сортировки по дате."""
-    if sorted == "up":
+    if sorting_order == "up":
         account_info.sort(key=lambda x: x["date"])
     else:
         account_info.sort(key=lambda x: x["date"], reverse=True)
