@@ -5,7 +5,7 @@ def filter_by_state(account_info: list[dict], state="EXECUTED") -> list[dict]:
         if info["state"] == state:
             filtered_info.append(info)
     if len(filtered_info) == 0:
-        return 'error'
+        return [{'error':'error'}]
     else:
         return filtered_info
 
@@ -17,7 +17,7 @@ def sort_by_date(account_info: list[dict], sorting_order="down") -> list[dict]:
     elif sorting_order == "down":
         account_info.sort(key=lambda x: x["date"], reverse=True)
     else:
-        return 'error'
+        return [{'error':'error'}]
     return account_info
 
 
