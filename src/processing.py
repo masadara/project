@@ -4,15 +4,20 @@ def filter_by_state(account_info: list[dict], state="EXECUTED") -> list[dict]:
     for info in account_info:
         if info["state"] == state:
             filtered_info.append(info)
-    return filtered_info
+    if len(filtered_info) == 0:
+        return 'error'
+    else:
+        return filtered_info
 
 
 def sort_by_date(account_info: list[dict], sorting_order="down") -> list[dict]:
     """Функция сортировки по дате."""
     if sorting_order == "up":
         account_info.sort(key=lambda x: x["date"])
-    else:
+    elif sorting_order == "down":
         account_info.sort(key=lambda x: x["date"], reverse=True)
+    else:
+        return 'error'
     return account_info
 
 
@@ -34,6 +39,6 @@ if __name__ == "__main__":
                 {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
                 {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
                 {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-            ]
+            ], 'up'
         )
     )
