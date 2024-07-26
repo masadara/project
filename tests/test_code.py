@@ -18,7 +18,7 @@ def test_mask_account(request, account_number, expected_result):
     [
         ("bank_card_number1", "bank_card_number1_right"),
         ("empty", "error"),
-        ("bank_card_number1", "bank_card_number1_right"),
+        ("bank_card_number2", "bank_card_number2_right"),
     ],
 )
 def test_mask_card_number(request, card_number, expected_result):
@@ -30,7 +30,12 @@ def test_mask_card_number(request, card_number, expected_result):
     [
         ("bank_account_card1", "bank_account_card1_right"),
         ("bank_account_card2", "bank_account_card2_right"),
+        ("bank_account_card3", "bank_account_card3_right"),
+        ("bank_account_card4", "bank_account_card4_right"),
+        ("bank_account_card5", "bank_account_card5_right"),
+        ("bank_account_card6", "bank_account_card6_right"),
         ("empty", "error"),
+        ("zero", "error"),
         (
             "list_info",
             "error",

@@ -105,6 +105,11 @@ def empty() -> Union[str]:
 
 
 @pytest.fixture
+def zero() -> Union[str]:
+    return "0"
+
+
+@pytest.fixture
 def bank_card_number1_right() -> Union[str]:
     return "7000 79** **** 6361"
 
@@ -135,6 +140,26 @@ def bank_account_card1() -> Union[str]:
 
 
 @pytest.fixture
+def bank_account_card3() -> Union[str]:
+    return "MasterCard 7158300734726758"
+
+
+@pytest.fixture
+def bank_account_card4() -> Union[str]:
+    return "Maestro 1596837868705199"
+
+
+@pytest.fixture
+def bank_account_card5() -> Union[str]:
+    return "Visa Classic 6831982476737658"
+
+
+@pytest.fixture
+def bank_account_card6() -> Union[str]:
+    return "Visa Gold 5999414228426353"
+
+
+@pytest.fixture
 def bank_account_card2() -> Union[str]:
     return "Счет 30135874305"
 
@@ -157,3 +182,23 @@ def test_date2() -> Union[str]:
 @pytest.fixture
 def test_date3() -> Union[int]:
     return 2025
+
+
+@pytest.fixture
+def bank_account_card3_right() -> Union[str]:
+    return "MasterCard 7158 30** **** 6758"
+
+
+@pytest.fixture
+def bank_account_card4_right() -> Union[str]:
+    return "Maestro 1596 83** **** 5199"
+
+
+@pytest.fixture
+def bank_account_card5_right() -> Union[str]:
+    return "Visa Classic 6831 98** **** 7658"
+
+
+@pytest.fixture
+def bank_account_card6_right() -> Union[str]:
+    return "Visa Gold 5999 41** **** 6353"
