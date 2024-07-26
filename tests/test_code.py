@@ -1,18 +1,24 @@
 import pytest
 
-from src.masks import get_mask_account, get_mask_card_number
 from src.processing import filter_by_state, sort_by_date
+from src.masks import get_mask_account, get_mask_card_number
 from src.widget import get_date, mask_account_card
 
 
-@pytest.mark.parametrize("account, expected_result", [("bank_account", "bank_account_right"), ("bank_account2", "bank_account_right")])
+@pytest.mark.parametrize(
+    "account, expected_result", [("bank_account", "bank_account_right"), ("bank_account2", "bank_account_right")]
+)
 def test_mask_account(request, account, expected_result):
     assert get_mask_account(request.getfixturevalue(account)) == request.getfixturevalue(expected_result)
 
 
 @pytest.mark.parametrize(
     "card_number, expected_result",
-    [('bank_card_number1', "bank_card_number1_right"), ("empty", "error"), ("bank_card_number1", "bank_card_number1_right")],
+    [
+        ("bank_card_number1", "bank_card_number1_right"),
+        ("empty", "error"),
+        ("bank_card_number1", "bank_card_number1_right"),
+    ],
 )
 def test_mask_card_number(request, card_number, expected_result):
     assert get_mask_card_number(request.getfixturevalue(card_number)) == request.getfixturevalue(expected_result)
@@ -24,7 +30,9 @@ def test_mask_card_number(request, card_number, expected_result):
         ("bank_account_card1", "bank_account_card1_right"),
         ("bank_account_card2", "bank_account_card2_right"),
         ("empty", "error"),
-        ('list_info', "error",
+        (
+            "list_info",
+            "error",
         ),
     ],
 )
@@ -34,19 +42,27 @@ def test_mask_account_card(request, account_card, expected_result):
 
 @pytest.mark.parametrize(
     "date, expected_result",
-    [("date1", "right_date"), ("date2", "right_date"), ("empty", "error"), ('date3', "error")],
+    [("date1", "right_date"), ("date2", "right_date"), ("empty", "error"), ("date3", "error")],
 )
 def test_get_date(request, date, expected_result):
     assert get_date(request.getfixturevalue(date)) == request.getfixturevalue(expected_result)
 
 
-@pytest.mark.parametrize("filter, state, expected_result", [('list_info', 'EXECUTED','list_executed'), ('list_info', 'CANCELED','list_canceled'), ('list_info', 'EXECUT','list_error')])
+@pytest.mark.parametrize(
+    "filter, state, expected_result",
+    [
+        ("list_info", "EXECUTED", "list_executed"),
+        ("list_info", "CANCELED", "list_canceled"),
+        ("list_info", "EXECUT", "list_error"),
+    ],
+)
 def test_filter_by_state(request, filter, state, expected_result):
     assert filter_by_state(request.getfixturevalue(filter), state) == request.getfixturevalue(expected_result)
 
 
-@pytest.mark.parametrize("fixture_name, order, expected_result", [('list_info', 'down', 'list_info_down'), ('list_info_for_up', 'up', 'list_info_up')])
+@pytest.mark.parametrize(
+    "fixture_name, order, expected_result",
+    [("list_info", "down", "list_info_down"), ("list_info_for_up", "up", "list_info_up")],
+)
 def test_sort_by_date(request, fixture_name, order, expected_result):
     assert sort_by_date(request.getfixturevalue(fixture_name), order) == request.getfixturevalue(expected_result)
-
-
