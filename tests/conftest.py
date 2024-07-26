@@ -145,15 +145,15 @@ def right_date() -> Union[str]:
 
 
 @pytest.fixture
-def date1() -> Union[str]:
+def test_date1() -> Union[str]:
     return "2024-03-11T02:26:18.671407"
 
 
 @pytest.fixture
-def date2() -> Union[str]:
+def test_date2() -> Union[str]:
     return "2024-03-11"
 
 
 @pytest.fixture
-def date3() -> Union[int]:
+def test_date3() -> Union[int]:
     return 2025
