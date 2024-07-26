@@ -6,7 +6,8 @@ from src.widget import get_date, mask_account_card
 
 
 @pytest.mark.parametrize(
-    "account_number, expected_result", [("bank_account", "bank_account_right"), ("bank_account2", "bank_account_right")]
+    "account_number, expected_result",
+    [("bank_account", "bank_account_right"), ("bank_account2", "bank_account_right")],
 )
 def test_mask_account(request, account_number, expected_result):
     assert get_mask_account(request.getfixturevalue(account_number)) == request.getfixturevalue(expected_result)
