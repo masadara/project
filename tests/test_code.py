@@ -5,127 +5,48 @@ from src.processing import filter_by_state, sort_by_date
 from src.widget import get_date, mask_account_card
 
 
-@pytest.mark.parametrize("account, expected_result", [("73654108430135874305", "**4305"), (545874305, "**4305")])
-def test_mask_account(account, expected_result):
-    assert get_mask_account(account) == expected_result
+@pytest.mark.parametrize("account, expected_result", [("bank_account", "bank_account_right"), ("bank_account2", "bank_account_right")])
+def test_mask_account(request, account, expected_result):
+    assert get_mask_account(request.getfixturevalue(account)) == request.getfixturevalue(expected_result)
 
 
 @pytest.mark.parametrize(
     "card_number, expected_result",
-    [(7000792289606361, "7000 79** **** 6361"), ("", "error"), ("123456789101112134", "123456** ******2134")],
+    [('bank_card_number1', "bank_card_number1_right"), ("empty", "error"), ("bank_card_number1", "bank_card_number1_right")],
 )
-def test_mask_card_number(card_number, expected_result):
-    assert get_mask_card_number(card_number) == expected_result
+def test_mask_card_number(request, card_number, expected_result):
+    assert get_mask_card_number(request.getfixturevalue(card_number)) == request.getfixturevalue(expected_result)
 
 
 @pytest.mark.parametrize(
     "account_card, expected_result",
     [
-        ("Visa Platinum 7000792289606361", "Visa Platinum 7000 79** **** 6361"),
-        ("Счет 30135874305", "Счет **4305"),
-        ("", "error"),
-        (
-            [
-                {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-                {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-                {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-                {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-            ],
-            "error",
+        ("bank_account_card1", "bank_account_card1_right"),
+        ("bank_account_card2", "bank_account_card2_right"),
+        ("empty", "error"),
+        ('list_info', "error",
         ),
     ],
 )
-def test_mask_account_card(account_card, expected_result):
-    assert mask_account_card(account_card) == expected_result
+def test_mask_account_card(request, account_card, expected_result):
+    assert mask_account_card(request.getfixturevalue(account_card)) == request.getfixturevalue(expected_result)
 
 
 @pytest.mark.parametrize(
     "date, expected_result",
-    [("2024-03-11T02:26:18.671407", "11.03.2024"), ("2024-03-11", "11.03.2024"), ("", "error"), (2025, "error")],
+    [("date1", "right_date"), ("date2", "right_date"), ("empty", "error"), ('date3', "error")],
 )
-def test_get_date(date, expected_result):
-    assert get_date(date) == expected_result
+def test_get_date(request, date, expected_result):
+    assert get_date(request.getfixturevalue(date)) == request.getfixturevalue(expected_result)
 
 
-@pytest.mark.parametrize(
-    "filter, state, expected_result",
-    [
-        (
-            [
-                {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-                {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-                {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-                {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-            ],
-            "EXECUTED",
-            [
-                {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-                {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-            ],
-        ),
-        (
-            [
-                {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-                {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-                {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-                {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-            ],
-            "CANCELED",
-            [
-                {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-                {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-            ],
-        ),
-        (
-            [
-                {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-                {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-                {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-                {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-            ],
-            "EXECUTE",
-            [{'error': 'error'}],
-        ),
-    ],
-)
-def test_filter_by_state(filter, state, expected_result):
-    assert filter_by_state(filter, state) == expected_result
+@pytest.mark.parametrize("filter, state, expected_result", [('list_info', 'EXECUTED','list_executed'), ('list_info', 'CANCELED','list_canceled'), ('list_info', 'EXECUT','list_error')])
+def test_filter_by_state(request, filter, state, expected_result):
+    assert filter_by_state(request.getfixturevalue(filter), state) == request.getfixturevalue(expected_result)
 
 
-@pytest.mark.parametrize(
-    "sorted_date, order, expected_result",
-    [
-        (
-            [
-                {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-                {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-                {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-                {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-            ],
-            "down",
-            [
-                {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-                {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-                {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-                {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-            ],
-        ),
-        (
-            [
-                {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-                {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-                {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-                {"id": 615064591, "state": "CANCELED", "date": "2018-09-12T08:21:33.419441"},
-            ],
-            "up",
-            [
-                {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-                {"id": 615064591, "state": "CANCELED", "date": "2018-09-12T08:21:33.419441"},
-                {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-                {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-            ],
-        ),
-    ],
-)
-def test_sort_by_date(sorted_date, order, expected_result):
-    assert sort_by_date(sorted_date, order) == expected_result
+@pytest.mark.parametrize("fixture_name, order, expected_result", [('list_info', 'down', 'list_info_down'), ('list_info_for_up', 'up', 'list_info_up')])
+def test_sort_by_date(request, fixture_name, order, expected_result):
+    assert sort_by_date(request.getfixturevalue(fixture_name), order) == request.getfixturevalue(expected_result)
+
+
