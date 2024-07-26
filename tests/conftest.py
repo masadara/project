@@ -85,7 +85,7 @@ def bank_account() -> Union[str]:
 
 
 @pytest.fixture
-def bank_account2()-> Union[int]:
+def bank_account2() -> Union[int]:
     return 545874305
 
 

@@ -1,5 +1,4 @@
 from typing import Union
-import pytest
 
 
 def filter_by_state(account_info: list[dict], state: Union[str] = "EXECUTED") -> list[dict]:
