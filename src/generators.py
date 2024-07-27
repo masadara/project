@@ -50,7 +50,7 @@ transactions = [
 
 
 def filter_by_currency(transaction_info: list[dict], currency: Union[str] = "USD") -> Iterator[dict]:
-    for info in transaction_info:
+    for info in iter(transaction_info):
         if info["operationAmount"]["currency"]["code"] == currency:
             yield info
 
@@ -73,17 +73,14 @@ def card_number_generator(start: int, end: int) -> Iterator[str]:
 
 if __name__ == "__main__":
     usd_transactions = filter_by_currency(transactions, "USD")
-    try:
-        for i in range(4):
-            print(next(usd_transactions))
-        print("Конец списка подходящих под фильтрацию операций ")
-    except StopIteration:
-        print("Выход за пределы списка или неверная валюта")
+    for i in range(2):
+        print(next(usd_transactions))
+    print("Конец списка подходящих под фильтрацию операций ")
     descriptions = transaction_descriptions(transactions)
     try:
-        for i in range(1):
+        for i in range(5):
             print(next(descriptions))
     except StopIteration:
         print("Выход за пределы списка или пустой список")
-for card_number in card_number_generator(1, 6):
-    print(card_number)
+    for card_number in card_number_generator(1, 1):
+        print(card_number)

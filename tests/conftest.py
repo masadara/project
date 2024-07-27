@@ -283,3 +283,23 @@ def transactions() -> list[dict]:
             "to": "Счет 14211924144426031657"
         }
     ]
+
+
+@pytest.fixture
+def org() -> str:
+    return "Перевод организации"
+
+
+@pytest.fixture
+def account_to_account() -> str:
+    return "Перевод со счета на счет"
+
+
+@pytest.fixture
+def empty_list() -> list:
+    return []
+
+
+@pytest.fixture
+def card_to_card() -> str:
+    return "Перевод с карты на карту"
