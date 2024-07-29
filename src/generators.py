@@ -85,12 +85,8 @@ if __name__ == "__main__":
     usd_transactions = filter_by_currency(transactions, "USD")
     for i in range(1):
         print(next(usd_transactions))
-    print("Конец списка подходящих под фильтрацию операций ")
     descriptions = transaction_descriptions(transactions)
-    try:
-        for i in range(5):
-            print(next(descriptions))
-    except StopIteration:
-        print("Выход за пределы списка или пустой список")
+    for i in range(4):
+        print(next(descriptions))
     for card_number in card_number_generator(2, 3):
         print(card_number)

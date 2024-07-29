@@ -77,7 +77,8 @@ def test_sort_by_date(request, fixture_name, order, expected_result):
 
 @pytest.mark.parametrize("expected", [("Перевод организации"), ("Перевод со счета на счет")])
 def test_transaction_descriptions(transactions, expected):
-    assert next(transaction_descriptions(transactions)) == expected
+    descriptions = list(transaction_descriptions(transactions))
+    assert expected in descriptions
 
 
 @pytest.mark.parametrize("start, end, expexted", [(1, 1, "0000 0000 0000 0001"), (2, 3, "0000 0000 0000 0002")])
