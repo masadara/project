@@ -4,6 +4,7 @@ from src.processing import filter_by_state, sort_by_date
 from src.masks import get_mask_account, get_mask_card_number
 from src.widget import get_date, mask_account_card
 from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
+from src.decorators import log
 
 
 @pytest.mark.parametrize(
@@ -118,3 +119,20 @@ def test_card_number_generator(start, end, expexted):
 )
 def test_filter_by_currency(transactions, currency, expected):
     assert next(filter_by_currency(transactions, currency)) == expected
+
+
+def test_log(capsys):
+    @log()
+    def my_function(x, y):
+        return x + y
+
+    my_function(1, 2)
+    captured_poz = capsys.readouterr()
+    assert (
+        captured_poz == "my_function ok, начало выполнения функции - 00:00:00, конец выполнения функции - 00:00:00\n"
+    )
+    my_function(1, "2")
+    captured_neg = capsys.readouterr()
+    assert (
+        captured_neg == "my_function error: unsupported operand type(s) for +: 'int' and 'str'. Inputs: (1, '2'), {}\n"
+    )

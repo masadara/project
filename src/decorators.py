@@ -1,22 +1,39 @@
+from datetime import time
 
 
-def log(logs, error_message, filename='empty'):
+def log(filename="empty"):
+    """
+    Декоратор для логирования вызова функции в текстовый файл или консоль.
+
+    :param filename: Название файла для логирования. Если не указано, лог выводится в консоль.
+    """
+
     def wrapper(function):
-        def inner():
-            print('начало')
-            if filename != 'empty':
-                my_file = open(str(filename), "w+")
-                my_file.write(logs)
-                my_file.close()
+        def inner(*args, **kwargs):
+            try:
+                time_start = time()
+                result = function(*args, **kwargs)
+                time_end = time()
+                log_message = f"{function.__name__} ok, начало выполнения функции - {time_start}, конец выполнения функции - {time_end}"
+            except Exception as e:
+                result = ""
+                log_message = f"{function.__name__} error: {str(e)}. Inputs: {args}, {kwargs}"
+            if filename != "empty":
+                with open(filename, "a") as my_file:
+                    my_file.write(log_message + "\n")
             else:
-                print(logs)
-            print('конец')
-            return function()
+                print(log_message)
+            return result
+
         return inner
+
     return wrapper
 
+
 if __name__ == "__main__":
-    @log(error_message='ошибка', logs='надпись', filename='file_logs.txt')
-    def my_function():
-        return ''
-    print(my_function())
+
+    @log()
+    def my_function(x, y):
+        return x + y
+
+    my_function(1, "2")
