@@ -129,10 +129,10 @@ def test_log(capsys):
     my_function(1, 2)
     captured_poz = capsys.readouterr()
     assert (
-        captured_poz == "my_function ok, начало выполнения функции - 00:00:00, конец выполнения функции - 00:00:00\n"
+        captured_poz.out == "my_function ok, начало выполнения функции - 00:00:00, конец выполнения функции - 00:00:00\n"
     )
     my_function(1, "2")
     captured_neg = capsys.readouterr()
     assert (
-        captured_neg == "my_function error: unsupported operand type(s) for +: 'int' and 'str'. Inputs: (1, '2'), {}\n"
+        captured_neg.out  == "my_function error: unsupported operand type(s) for +: 'int' and 'str'. Inputs: (1, '2'), {}\n"
     )
