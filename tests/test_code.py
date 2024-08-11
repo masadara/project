@@ -1,10 +1,15 @@
 import pytest
+from unittest.mock import Mock
 
 from src.processing import filter_by_state, sort_by_date
 from src.masks import get_mask_account, get_mask_card_number
 from src.widget import get_date, mask_account_card
 from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
+from src.utils import show_transaction_info
 from src.decorators import log
+from src.external_api import amount_transaction
+from unittest.mock import patch
+from unittest.mock import Mock
 
 
 @pytest.mark.parametrize(
@@ -136,3 +141,5 @@ def test_log(capsys):
     assert (
         captured_neg.out  == "my_function error: unsupported operand type(s) for +: 'int' and 'str'. Inputs: (1, '2'), {}\n"
     )
+
+def test_show_transaction_info():
