@@ -143,3 +143,21 @@ def test_log(capsys):
     )
 
 def test_show_transaction_info():
+    assert show_transaction_info('') == []
+
+@patch('requests.get')
+def test_amount_transaction(mock_get):
+    mock_response = Mock()
+    mock_response.json.return_value = {'key': 'tLZavyRIMZvWI0Dzu80e5vZw0L3046hI'}
+    mock_get.return_value = mock_response
+    result = amount_transaction({
+                "id": 74897425,
+                "state": "EXECUTED",
+                "date": "2019-02-08T09:09:35.038506",
+                "operationAmount": {"amount": "62654.30", "currency": {"name": "USD", "code": "USD"}},
+                "description": "Перевод организации",
+                "from": "Счет 28429442875257789335",
+                "to": "Счет 95473010446151855633",
+            })
+    assert result == 5732526.796102
+    mock_get.assert_called_once_with('https://api.apilayer.com')
