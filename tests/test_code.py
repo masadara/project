@@ -139,7 +139,7 @@ def test_log(capsys):
     my_function(1, "2")
     captured_neg = capsys.readouterr()
     assert (
-        captured_neg.out  == "my_function error: unsupported operand type(s) for +: 'int' and 'str'. Inputs: (1, '2'), {}\n"
+        captured_neg.out == "my_function error: unsupported operand type(s) for +: 'int' and 'str'. Inputs: (1, '2'), {}\n"
     )
 
 def test_show_transaction_info():
@@ -147,17 +147,27 @@ def test_show_transaction_info():
 
 @patch('requests.get')
 def test_amount_transaction(mock_get):
+    # Настраиваем mock-объект
     mock_response = Mock()
-    mock_response.json.return_value = {'key': 'tLZavyRIMZvWI0Dzu80e5vZw0L3046hI'}
+    mock_response.json.return_value = {"result": 57325.27}
     mock_get.return_value = mock_response
-    result = amount_transaction({
-                "id": 74897425,
-                "state": "EXECUTED",
-                "date": "2019-02-08T09:09:35.038506",
-                "operationAmount": {"amount": "62654.30", "currency": {"name": "USD", "code": "USD"}},
-                "description": "Перевод организации",
-                "from": "Счет 28429442875257789335",
-                "to": "Счет 95473010446151855633",
-            })
-    assert result == 5732526.796102
-    mock_get.assert_called_once_with('https://api.apilayer.com')
+    # Пример транзакции
+    transaction = {
+        "id": 74897425,
+        "state": "EXECUTED",
+        "date": "2019-02-08T09:09:35.038506",
+        "operationAmount": {"amount": "62654.30", "currency": {"name": "USD", "code": "USD"}},
+        "description": "Перевод организации",
+        "from": "Счет 28429442875257789335",
+        "to": "Счет 95473010446151855633",
+    }
+
+    # Вызываем тестируемую функцию
+    result = amount_transaction(transaction)
+
+    # Проверяем результат
+    assert result == 57325.27
+    mock_get.assert_called_once_with(
+        "https://api.apilayer.com/exchangerates_data/convert?to=RUB&from=USD&amount=62654.30",
+        headers={"apikey": "your_api_key"}
+    )

@@ -25,7 +25,6 @@ def amount_transaction(transaction: dict) -> float:
         url = f"https://api.apilayer.com/exchangerates_data/convert?to=RUB&from={code}&amount={amount}"
         headers = {"apikey": apikey}
         response = requests.request("GET", url, headers=headers)
-
         result = json.loads(response.text)
         return float(result["result"])
     else:
