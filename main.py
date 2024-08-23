@@ -73,14 +73,20 @@ def main():
     if search_filter.lower() == 'да':
         str_search = input('Введите слово для поиска\n')
         trans_filter_by_state = searching(trans_filter_by_state, str_search)
-    print(f'Распечатываю итоговый список транзакций...\n Всего банковских операций в выборке: {len(trans_filter_by_state)}\n')
-    for info in trans_filter_by_state:
-        print(f'{get_date(info.get("date"))} {info.get("description")}')
-        if info.get("description") == 'Открытие вклада':
-            print(f'{mask_account_card(info.get("to"))}')
-        else:
-            print(f'{mask_account_card(info.get("from"))} -> {mask_account_card(info.get("to"))}')
-        print(f'Сумма: {info.get("operationAmount").get("amount")} {info.get("operationAmount").get("currency").get("code")}\n')
+    if len(trans_filter_by_state) == 0:
+        print('Не найдено ни одной транзакции, подходящей под ваши условия фильтрации\n')
+    else:
+        print(f'Распечатываю итоговый список транзакций...\n Всего банковских операций в выборке: {len(trans_filter_by_state)}\n')
+        for info in trans_filter_by_state:
+            print(f'{get_date(info.get("date"))} {info.get("description")}')
+            if info.get("description") == 'Открытие вклада':
+                print(f'{mask_account_card(info.get("to"))}')
+            else:
+                print(f'{mask_account_card(info.get("from"))} -> {mask_account_card(info.get("to"))}')
+            try:
+                print(f'Сумма: {info.get("operationAmount").get("amount")} {info.get("operationAmount").get("currency").get("code")}\n')
+            except AttributeError:
+                print(f'Сумма: {info.get("amount")} {info.get("currency_code")}\n')
 
 
 

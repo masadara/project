@@ -16,3 +16,7 @@ def csv_transactions(path: str):
     print(df.shape)
     return df.head()
 
+
+path_to_xlsx = os.path.join(os.path.dirname(__file__), "..", "data", "transactions_excel.xlsx")
+transactions_full = xlsx_transactions(path_to_xlsx)
+print(transactions_full)

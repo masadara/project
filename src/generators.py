@@ -54,9 +54,14 @@ def filter_by_currency(
 ) -> list[dict]:
     """Функция вывода информации о транзакции с фильтрацией по валюте."""
     filtered_info = []
-    for info in iter(transaction_info):
-        if info.get("operationAmount").get("currency").get("code") == currency:
-            filtered_info.append(info)
+    try:
+        for info in iter(transaction_info):
+            if info.get("operationAmount").get("currency").get("code") == currency:
+                filtered_info.append(info)
+    except AttributeError:
+        for info in iter(transaction_info):
+            if info.get('currency_code') == currency:
+                filtered_info.append(info)
     if len(filtered_info) == 0:
         return []
     for info in range(len(filtered_info)):
