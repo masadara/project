@@ -4,6 +4,7 @@ from typing import Union
 def filter_by_state(account_info: list[dict], state: Union[str] = "EXECUTED") -> list[dict]:
     """Функция фильтрации по параметру."""
     filtered_info = []
+    print(type(account_info))
     for info in account_info:
         if info["state"] == state:
             filtered_info.append(info)
@@ -46,3 +47,4 @@ if __name__ == "__main__":
             "up",
         )
     )
+

@@ -41,9 +41,9 @@ def get_mask_card_number(card_number: Union[str, int] = 0) -> str:
 
 def get_mask_account(account: Union[str, int]) -> str:
     """Функция маскировки номера банковского счета."""
+    account = str(account)
     if len(account) == 20:
         logger.info(f"Выполняем маскировку номера банковского счета для {account}")
-        account = str(account)
         mask_account = "*" * 2 + account[-4:]
         return mask_account
     else:

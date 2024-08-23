@@ -7,7 +7,7 @@ def xlsx_transactions(path: str) -> list[dict]:
     """Функция вывода транзакций с XLSX файла"""
     df = pd.read_excel(path)
     print(df.shape)
-    return df.head().to_dict("records")
+    return df.head().to_dict(orient="records")
 
 
 def csv_transactions(path: str):
