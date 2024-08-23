@@ -66,7 +66,22 @@ def main():
         else:
             trans_filter_by_state = sort_by_date(trans_filter_by_state, 'down')
             logger.info(f"Выбрана сортировка {sorting_by_date_upper_lower}")
-    print(trans_filter_by_state)
+    code_filter = input('Выводить только рублевые тразакции? Да/Нет\n')
+    if code_filter.lower() == 'да':
+        trans_filter_by_state = filter_by_currency(trans_filter_by_state, 'RUB')
+    search_filter = input('Отфильтровать список транзакций по определенному слову в описании? Да/Нет\n')
+    if search_filter.lower() == 'да':
+        str_search = input('Введите слово для поиска\n')
+        trans_filter_by_state = searching(trans_filter_by_state, str_search)
+    print(f'Распечатываю итоговый список транзакций...\n Всего банковских операций в выборке: {len(trans_filter_by_state)}\n')
+    for info in trans_filter_by_state:
+        print(f'{get_date(info.get("date"))} {info.get("description")}')
+        if info.get("description") == 'Открытие вклада':
+            print(f'{mask_account_card(info.get("to"))}')
+        else:
+            print(f'{mask_account_card(info.get("from"))} -> {mask_account_card(info.get("to"))}')
+        print(f'Сумма: {info.get("operationAmount").get("amount")} {info.get("operationAmount").get("currency").get("code")}\n')
+
 
 
 if __name__ == "__main__":

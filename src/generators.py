@@ -51,16 +51,16 @@ transactions = [
 
 def filter_by_currency(
     transaction_info: list[dict], currency: Union[str] = "USD"
-) -> Union[Iterator[dict], Iterator[list]]:
+) -> list[dict]:
     """Функция вывода информации о транзакции с фильтрацией по валюте."""
     filtered_info = []
     for info in iter(transaction_info):
-        if info["operationAmount"]["currency"]["code"] == currency:
+        if info.get("operationAmount").get("currency").get("code") == currency:
             filtered_info.append(info)
     if len(filtered_info) == 0:
-        yield []
+        return []
     for info in range(len(filtered_info)):
-        yield filtered_info[info]
+        return filtered_info
 
 
 def transaction_descriptions(transaction_info: list[dict]) -> Iterator[list[dict]]:
@@ -81,12 +81,11 @@ def card_number_generator(start: int, end: int) -> Iterator[str]:
         yield formatted_card_number
 
 
-if __name__ == "__main__":
-    usd_transactions = filter_by_currency(transactions, "USD")
-    for i in range(1):
-        print(next(usd_transactions))
-    descriptions = transaction_descriptions(transactions)
-    for i in range(4):
-        print(next(descriptions))
-    for card_number in card_number_generator(2, 3):
-        print(card_number)
+# if __name__ == "__main__":
+#     usd_transactions = filter_by_currency(transactions, "RUB")
+#     print(usd_transactions)
+#     descriptions = transaction_descriptions(transactions)
+#     for i in range(4):
+#         print(next(descriptions))
+#     for card_number in card_number_generator(2, 3):
+#         print(card_number)
