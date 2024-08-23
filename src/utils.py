@@ -2,6 +2,7 @@ import json
 import os
 import logging
 from src.search import searching
+from src.search import count_description
 
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -34,8 +35,8 @@ def show_transaction_info(path: str) -> list[dict]:
 
 path_to_json = os.path.join(os.path.dirname(__file__), "..", "data", "operations.json")
 result = show_transaction_info(path_to_json)
-print(type(result))
-print(result)
 # for info in result:
-#     print(info['description'])
-print(searching(transactions=result, str_search='организации'))
+#     print(info.get('description'))
+
+# print(searching(transactions=result, str_search='счет'))
+# print(count_description(result, ['Перевод организации', 'лук', 'Перевод со счета на счет', 'Открытие вклада', 'Перевод с карты на карту']))
