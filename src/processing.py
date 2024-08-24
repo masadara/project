@@ -3,6 +3,8 @@ from typing import Union
 
 def filter_by_state(account_info: list[dict], state: Union[str] = "EXECUTED") -> list[dict]:
     """Функция фильтрации по параметру."""
+    if state != "EXECUTED" and state != "CANCELED" and state != "PENDING":
+        return []
     filtered_info = []
     for info in account_info:
         if info.get("state") == state:
