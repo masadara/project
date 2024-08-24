@@ -68,10 +68,12 @@ def main():
             logger.info(f"Выбрана сортировка {sorting_by_date_upper_lower}")
     code_filter = input('Выводить только рублевые тразакции? Да/Нет\n')
     if code_filter.lower() == 'да':
+        logger.info(f"Пользователь выбрал вывод только рублёвых транзакций.")
         trans_filter_by_state = filter_by_currency(trans_filter_by_state, 'RUB')
     search_filter = input('Отфильтровать список транзакций по определенному слову в описании? Да/Нет\n')
     if search_filter.lower() == 'да':
         str_search = input('Введите слово для поиска\n')
+        logger.info(f"Пользователь выбрал сортировку по слову {str_search}")
         trans_filter_by_state = searching(trans_filter_by_state, str_search)
     if len(trans_filter_by_state) == 0:
         print('Не найдено ни одной транзакции, подходящей под ваши условия фильтрации\n')
@@ -91,4 +93,5 @@ def main():
 
 
 if __name__ == "__main__":
+    nan = ''
     main()
